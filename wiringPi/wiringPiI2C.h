@@ -22,6 +22,8 @@
  ***********************************************************************
  */
 
+ #include <stdint.h>
+ 
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -29,6 +31,7 @@ extern "C" {
 extern int wiringPiI2CRead           (int fd) ;
 extern int wiringPiI2CReadReg8       (int fd, int reg) ;
 extern int wiringPiI2CReadReg16      (int fd, int reg) ;
+extern int wiringPiI2CReadRegI2CBlock(int fd, int reg, uint8_t length, uint8_t *values) ;
 
 extern int wiringPiI2CWrite          (int fd, int data) ;
 extern int wiringPiI2CWriteReg8      (int fd, int reg, int data) ;

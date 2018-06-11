@@ -154,6 +154,33 @@ int wiringPiI2CReadReg16 (int fd, int reg)
     return data.word & 0xFFFF ;
 }
 
+int wiringPiI2CReadRegI2CBlock (int fd, int reg, uint8_t length, uint8_t *values)
+{
+  union i2c_smbus_data data;
+
+  int i, err;
+  
+  if (length > I2C_SMBUS_BLOCK_MAX)
+		length = I2C_SMBUS_BLOCK_MAX;
+  
+  data.block[0] = length;
+  
+  err = i2c_smbus_access (fd, I2C_SMBUS_READ, reg, 
+						  length == 32 ? I2C_SMBUS_I2C_BLOCK_BROKEN : I2C_SMBUS_I2C_BLOCK_DATA, &data);
+  
+  if (err < 0)
+  {
+	return err ;  
+  }    
+  
+  for (i = 1; i <= data.block[0]; i++)
+  {
+	values[i - 1] = data.block[i];
+  }
+  return data.block[0];
+     
+}
+
 
 /*
  * wiringPiI2CWrite:
